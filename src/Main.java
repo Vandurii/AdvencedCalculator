@@ -4,6 +4,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         System.out.println(generatePrimeNumber(30));
+
     }
 
     public static int nww(int a, int b){
