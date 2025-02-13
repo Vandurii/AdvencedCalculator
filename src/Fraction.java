@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import enums.Operator;
 
 public class Fraction {
 
@@ -10,44 +10,64 @@ public class Fraction {
         this.denominator = denominator;
     }
 
-    public void add(Fraction ...args){
+    public Fraction(int wholePart, int numerator, int denominator){
+        this.numerator = Main.getSign(numerator, wholePart) + (wholePart * denominator);
+        this.denominator = denominator;
+    }
+
+    public Fraction add(Fraction ...args){
         reduceToCommonDenominator(args);
-        infixToFunction(Operator.add, args);
+        return infixToFunction(Operator.add, args);
     }
 
-    public void subtract(Fraction ...args){
+    public Fraction subtract(Fraction ...args){
         reduceToCommonDenominator(args);
-        infixToFunction(Operator.subtract, args);
+        return infixToFunction(Operator.subtract, args);
     }
 
-    public void multiply(Fraction ...args){
-        infixToFunction(Operator.multiply, args);
+    public Fraction multiply(Fraction ...args){
+        return infixToFunction(Operator.multiply, args);
     }
 
-    public void divide(Fraction ...args){
-        infixToFunction(Operator.divide, args);
+    public Fraction divide(Fraction ...args){
+        return infixToFunction(Operator.divide, args);
     }
 
-    public void infixToFunction(Operator operator, Fraction ...args){
+    public Fraction infixToFunction(Operator operator, Fraction ...args){
+
+        Fraction fraction  = new Fraction(numerator, denominator);
         for(Fraction f: args){
             switch (operator){
                 case add:
-                    this.numerator += f.numerator;
+                    fraction.numerator += f.numerator;
                     break;
                 case subtract:
-                    this.numerator -= f.numerator;
+                    fraction.numerator -= f.numerator;
                     break;
                 case multiply:
-                    this.numerator *= f.numerator;
-                    this.denominator *= f.denominator;
+                    fraction.numerator *= f.numerator;
+                    fraction.denominator *= f.denominator;
                     break;
                 case divide:
-                    this.numerator *= f.denominator;
-                    this.denominator *= f.numerator;
+                    fraction.numerator *= f.denominator;
+                    fraction.denominator *= f.numerator;
+                    fraction.correctSign();
                     break;
                 default:
                     throw new IllegalStateException("false operator");
             }
+        }
+
+        fraction.reduceFraction();
+
+        return fraction;
+    }
+
+    public void reduceFraction(){
+        int commonDivisor = Main.greatestCommonDivisor(numerator, denominator);
+        if(commonDivisor > 1){
+            numerator /= commonDivisor;
+            denominator /= commonDivisor;
         }
     }
 
@@ -78,8 +98,22 @@ public class Fraction {
         this.denominator = this.denominator * scale;
     }
 
+    public void correctSign(){
+        if(denominator < 0){
+            denominator *= -1;
+            if(numerator > 0) numerator *= -1;
+        }
+    }
+
     @Override
     public String toString(){
-        return String.format("%s / %s", numerator, denominator);
+        if(Main.absolute(numerator) > Main.absolute(denominator)){
+            int wholePart = numerator / denominator;
+
+            return String.format("%s: %s / %s", wholePart, Main.absolute(numerator - (wholePart * denominator)), denominator);
+
+        }else {
+            return String.format("%s / %s", numerator, denominator);
+        }
     }
 }

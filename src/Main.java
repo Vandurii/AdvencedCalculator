@@ -1,15 +1,37 @@
+import enums.Operator;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-       Fraction a = new Fraction(-1, 6);
-       Fraction b = new Fraction(3, 4);
-       Fraction c = new Fraction(1, 9);
+        Fraction a = new Fraction(1, 50);
+        Fraction b = new Fraction(-5, 1, 2);
 
-       a.multiply(b);
-        System.out.println(a.toString());
+        print(a, b, Operator.add);
+        print(a, b, Operator.subtract);
+        print(a, b, Operator.multiply);
+        print(a, b, Operator.divide);
+    }
+
+    public static void print(Fraction first, Fraction second, Operator operator){
+        Fraction result = null;
+        switch (operator){
+            case add:
+                result = first.add(second);
+                break;
+            case subtract:
+                result = first.subtract(second);
+                break;
+            case multiply:
+                result = first.multiply(second);
+                break;
+            case divide:
+                result = first.divide(second);
+                break;
+        }
+
+        System.out.println(result);
     }
 
     public static int  lowestCommonMultiple(int ...args){
@@ -101,6 +123,7 @@ public class Main {
     }
 
     public static List<Integer> getPrimeFactors(int number){
+        number = absolute(number);
         List<Integer> primeFactors = new ArrayList<>();
         List<Integer> primeNumbers = generatePrimeNumbersMax(number);
 
@@ -126,6 +149,14 @@ public class Main {
         return list;
     }
 
+    public static int absolute(int n){
+        return n < 0 ? n * -1 : n;
+    }
+
+    public static int getSign(int n, int sign){
+        return sign < 0 ? n * -1: n;
+    }
+
     public static List<Integer> generatePrimeNumbersRange(int range){
         List<Integer> list = new ArrayList<>();
 
@@ -138,4 +169,3 @@ public class Main {
         return list;
     }
 }
-
