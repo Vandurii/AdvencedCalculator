@@ -5,9 +5,14 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Fraction a = new Fraction(1, 50);
-        Fraction b = new Fraction(-5, 1, 2);
+        Fraction a = new Fraction(1, 4);
 
+        DecimalExpansion b = new DecimalExpansion(a);
+
+        System.out.println(b);
+    }
+
+    public static void baseOperation(Fraction a, Fraction b){
         print(a, b, Operator.add);
         print(a, b, Operator.subtract);
         print(a, b, Operator.multiply);
@@ -90,17 +95,7 @@ public class Main {
         return  after / before;
     }
 
-    public static int max(List<Integer> list){
-        int highest = Integer.MIN_VALUE;
-
-        for(int i : list){
-            if(i > highest) highest = i;
-        }
-
-        return highest;
-    }
-
-    public static int max(int[] args){
+    public static int max(int ...args){
         int highest = Integer.MIN_VALUE;
 
         for(int i : args){
@@ -108,6 +103,16 @@ public class Main {
         }
 
         return highest;
+    }
+
+    public static int min(int ...args){
+        int lowest = Integer.MAX_VALUE;
+
+        for(int i : args){
+            if(i < lowest) lowest = i;
+        }
+
+        return lowest;
     }
 
     public static boolean isPrime(int number){
