@@ -5,14 +5,21 @@ public class Fraction {
     int numerator;
     int denominator;
 
+    public Fraction(int numerator){
+        this.numerator = numerator;
+        this.denominator = 1;
+    }
+
     public Fraction(int numerator, int denominator){
         this.numerator = numerator;
         this.denominator = denominator;
+       // this.reduceFraction();
     }
 
     public Fraction(int wholePart, int numerator, int denominator){
         this.numerator = Main.getSign(numerator, wholePart) + (wholePart * denominator);
         this.denominator = denominator;
+      //  this.reduceFraction();
     }
 
     public Fraction add(Fraction ...args){
@@ -106,8 +113,21 @@ public class Fraction {
     }
 
     @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Fraction)) return false;
+        Fraction f = (Fraction) o;
+
+        this.reduceFraction();
+        f.reduceFraction();
+
+        return  this.numerator == f.numerator && this.denominator == f.denominator;
+    }
+
+    @Override
     public String toString(){
-        if(Main.absolute(numerator) > Main.absolute(denominator)){
+        if(denominator == 1){
+            return numerator + "";
+        }else if(Main.absolute(numerator) > Main.absolute(denominator)){
             int wholePart = numerator / denominator;
 
             return String.format("%s: %s / %s", wholePart, Main.absolute(numerator - (wholePart * denominator)), denominator);

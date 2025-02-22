@@ -5,11 +5,12 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Fraction a = new Fraction(1, 4);
-
-        DecimalExpansion b = new DecimalExpansion(a);
-
+        Power a = new Power(5, 2);
+        Power b = new Power(5, 3);
+        System.out.println(a);
         System.out.println(b);
+
+        System.out.println(a.mul(b));
     }
 
     public static void baseOperation(Fraction a, Fraction b){
@@ -71,7 +72,6 @@ public class Main {
     public static int greatestCommonDivisor(int a, int b){
         List<Integer> aPrimeFactors = getPrimeFactors(a);
         List<Integer> bPrimeFactors = getPrimeFactors(b);
-
         // todo stream
         List<Integer> duplicateNumber = new ArrayList<>();
 

@@ -4,15 +4,22 @@ import java.util.ArrayList;
 import java.util.*;
 
 class DecimalExpansion{
-    int wholePart;
-    int decimal;
+    String wholePart;
+    String decimal;
     Expansion expansion;
 
     public DecimalExpansion(Fraction fraction){
-        this.wholePart = fraction.numerator / fraction.denominator;
-        if(wholePart > 0) fraction.numerator = fraction.numerator - (wholePart * fraction.denominator);
+        this.wholePart = String.valueOf(fraction.numerator / fraction.denominator);
+        int whole = Integer.parseInt(wholePart);
+        if(whole > 0) fraction.numerator = fraction.numerator - (whole * fraction.denominator);
 
         init(fraction);
+    }
+
+    public DecimalExpansion(String wholePart, String decimal){
+        this.wholePart = wholePart;
+        this.decimal = decimal;
+        this.expansion = Expansion.finite;
     }
 
     static String val = "";
@@ -52,12 +59,12 @@ class DecimalExpansion{
         if(len == 0){
             expansion = Expansion.finite;
             int end = Main.min(maxLen, val.length());
-            decimal = Integer.parseInt(val.substring(start, end));
+            decimal = val.substring(start, end);
         }else if(len == 1){
-            decimal = Integer.parseInt(val.substring(start, start + 1));
+            decimal = val.substring(start, start + 1);
             expansion = Expansion.infinite;
         }else{
-            decimal = Integer.parseInt(val.substring(start, start + len));
+            decimal = val.substring(start, start + len);
             expansion = Expansion.infinitePeriodic;
         }
 
@@ -77,22 +84,37 @@ class DecimalExpansion{
         return  0;
     }
 
-
-    public int getLen(){
-        if (this.expansion == Expansion.finite) {
-            int n = decimal;
-            int len = 1;
-
-            while((n /= 10) > 0) len++;
-
-            return len;
-        }else{
-            throw new IllegalStateException("This decimal value is infinite");
+    public int pow(int pow){
+        int n = 1;
+        for(int i = 0; i < pow; i++){
+            n *= 10;
         }
+
+        return n;
     }
 
-    public void translateToFraction(){
+    public Fraction translateToFraction(){
+        if (this.expansion == Expansion.finite) {
+            int len = decimal.length();
+            int den = pow(len);
 
+            int whole = Integer.parseInt(wholePart);
+            Fraction f = new Fraction(whole, Integer.parseInt(decimal), den);
+            f.reduceFraction();
+
+            return f;
+        }else{
+            // todo make it work
+//            int len = decimal.length();
+//            int den = pow(len);
+//
+//            float x = Float.parseFloat("0." + decimal);
+//            int y = (int)((x * den));
+//
+//            Fraction f = new Fraction(y, den - 1);
+//            return f;
+            return null;
+        }
     }
 
     public String toString(){
